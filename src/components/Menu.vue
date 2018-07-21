@@ -4,7 +4,7 @@
     <nav role="navigation">
         <ul class="access-menu">
             <li v-for="(value, key) in menu" :key="key">
-                <a href="#" >{{ key }}</a>
+                <a v-shortkey.focus="[value.key]" href="#" >{{ key }}</a>
                 <ul class="access-submenu">
                   <a v-for="children in value.childs" :key="children" href="#"><li> {{children}} </li></a>
                 </ul>
@@ -28,7 +28,8 @@ export default {
             'Accessories',
             'Sports',
             'Sale'
-          ]
+          ],
+          key: 1
         },
         Mens: {
           childs: [
@@ -38,7 +39,8 @@ export default {
             'Accessories',
             'Sports',
             'Sale'
-          ]
+          ],
+          key: 2
         },
         Kids: {
           childs: [
@@ -46,7 +48,8 @@ export default {
            'Boys',
            'Girls',
            'Infant',
-           'Sale']
+           'Sale'],
+           key: 3
         },
         Sale: {
           childs: [
@@ -54,7 +57,8 @@ export default {
               'Women\'s Sale',
               'Plus Sale',
               'Kids\' Sale'
-              ]
+              ],
+              key: 4
         }
       }
     }
