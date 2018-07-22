@@ -10,7 +10,8 @@
     <nav role="navigation">
         <ul class="access-menu">
             <li v-for="(value, key) in menu" :key="key">
-                <a v-shortkey.focus="[value.key]" href="#" >{{ key }}</a>
+                <a v-shortkey.focus="[value.key]" 
+            :is-focused="key === selected" href="#" >{{ key }}</a>
                 <ul class="access-submenu">
                   <a v-for="children in value.childs" :key="children" href="#"><li> {{children}} </li></a>
                 </ul>
@@ -27,6 +28,7 @@ export default {
   data () {
     return {
       results: '',
+      selected: false,
       menu: {
         Womens: {
           childs: [
@@ -81,7 +83,8 @@ let speechList = {
       methods: ['link'],
       numbers: ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
     }
-    let grammarNumbers = ''
+    let grammarNumbers = '';
+    let resultText = '';
     for (let i = 0; i < speechList.numbers.length; ++i) {
       grammarNumbers += `${i === 0 ? '' : ' '}(${i} | ${speechList.numbers[i]})`
     }
@@ -109,11 +112,14 @@ let speechList = {
                 }
 
                 this.recognition.onend = () => {
-                    
+                    let _array = resultText.split(' ')
+                    let selectedItem = _array[_array.length - 1];
+                    const indexSpeechListNumbers = speechList.numbers.indexOf(selectedItem)
+                    this.selectItem(parseInt(indexSpeechListNumbers))
                 }
                 this.recognition.onresult = e => {
-                    result = e.results[0][0]['transcript']
-                    this.results = result
+                    resultText = e.results[0][0]['transcript']
+                    this.results = resultText
                 }
             }
       },
@@ -127,7 +133,11 @@ let speechList = {
             this.results = text
             this.synth(text)
         }
-        },
+    },
+    selectItem(_select){
+        alert(_select)
+        this.selected = _select;
+    },
         synth (text = '') {
             let synth = window.speechSynthesis
             if (synth && text.length) {
